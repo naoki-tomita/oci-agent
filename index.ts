@@ -1,4 +1,3 @@
-import { config } from "https://deno.land/x/dotenv/mod.ts";
 import { serve } from "https://deno.land/std@0.159.0/http/server.ts";
 
 const decoder = new TextDecoder();
