@@ -13,10 +13,15 @@ async function $(command: string) {
 
 
 function main() {
+  const { ACCESS_TOKEN = "DUMMY" } = config();
   serve(async (req) => {
-    await $("docker compose pull");
-    await $("docker compose up -d");
-    return new Response("{}", { status: 200 });
+    const token = req.headers.get("authorization")?.replace("Bearer", "").trim() ?? "";
+    if (ACCESS_TOKEN === token) {
+      await $("docker compose pull");
+      await $("docker compose up -d");
+      return new Response("{}", { status: 200 });
+    }
+    return new Response("No access right.", { status: 403 });
   });
 }
 
