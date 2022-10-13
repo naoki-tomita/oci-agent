@@ -10,6 +10,7 @@ use once_cell::sync::OnceCell;
 
 
 fn exec(command: String) {
+  println!("execute: '{}'", command);
   let output = Command::new("bash").arg("-c").arg(command).output().expect("failed to execute");
   io::stdout().write_all(&output.stdout).unwrap();
   io::stderr().write_all(&output.stderr).unwrap();
@@ -25,9 +26,14 @@ async fn command(req: Request<Body>) -> Result<Response<Body>, Infallible> {
         exec("docker compose pull".into());
         exec("docker compose up -d".into());
         return Ok(Response::new("{}".into()));
+      } else {
+        println!("Authorization token is not valid. TOKEN: {}", header_value);
       }
     }
+  } else {
+    println!("Authorization header is not appeared.");
   }
+
   Ok(Response::new("{}".into()))
 }
 
