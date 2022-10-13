@@ -52,6 +52,7 @@ async fn main() {
 
   let server = Server::bind(&addr).serve(make_svc);
 
+  println!("Starting server on 0.0.0.0:3000");
   // Run this server for... forever!
   if let Err(e) = server.await {
     eprintln!("server error: {}", e);
