@@ -21,8 +21,13 @@ jobs:
         echo -e '[target.aarch64-unknown-linux-gnu]\nlinker = "aarch64-linux-gnu-gcc"' > ~/.cargo/config
     - name: Build
       run: cargo build --target aarch64-unknown-linux-gnu --release
-    - uses: actions/upload-artifact@v3
+    - name: Upload files to a GitHub release
+      uses: svenstaro/upload-release-action@2.3.0
       with:
-        name: aarch64-binary
-        path: target/aarch64-unknown-linux-gnu/release/oci-agent
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        file: target/aarch64-unknown-linux-gnu/release/oci-agent
+        asset_name: aarch64-binary
+        tag: ${{ github.ref }}
+        overwrite: true
+        body: "Release ${{ github.ref }}"
 
